@@ -10,6 +10,13 @@ public class User {
     private String lastName;
     private String avatar;
 
+    public User(int id, String firstName, String lastName, String avatar) {
+        this.setId(id);
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setAvatar(avatar);
+    }
+
     public int getId() {
         return id;
     }
