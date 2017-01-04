@@ -1,3 +1,5 @@
+package com.example.taqtile.onboard_android;
+
 /**
  * Created by taqtile on 1/4/17.
  */
