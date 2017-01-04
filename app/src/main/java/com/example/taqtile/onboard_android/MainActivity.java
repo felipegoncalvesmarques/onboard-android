@@ -1,6 +1,9 @@
 package com.example.taqtile.onboard_android;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
     private RecyclerView usersList;
     private UsersAdapter mAdapter;
     private List<User> users = new ArrayList<User>();
+    private UsersDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
         usersList = (RecyclerView) findViewById(R.id.usersList);
 
         Log.d("MainActivity.onCreate", "Got RecyclerView");
+
+        mDbHelper = new UsersDbHelper(this);
 
         mAdapter = new UsersAdapter(users);
         mAdapter.setListener(this);
@@ -60,6 +66,35 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
                 Log.d("MainActivity.onCreate", Integer.toString(response.body().data.size()));
                 users.addAll(response.body().data);
                 mAdapter.notifyDataSetChanged();
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                for (int i = 0; i < users.size(); i++)  {
+                    User user = users.get(i);
+                    ContentValues values = new ContentValues();
+                    values.put(UserContract.Users._ID, user.getId());
+                    values.put(UserContract.Users.COLUMN_NAME_FIRST_NAME, user.getFirstName());
+                    values.put(UserContract.Users.COLUMN_NAME_LAST_NAME, user.getLastName());
+                    values.put(UserContract.Users.COLUMN_NAME_AVATAR, user.getAvatar());
+
+                    long newRowId = db.insert(UserContract.Users.TABLE_NAME, null, values);
+                }
+                db = mDbHelper.getReadableDatabase();
+                String[] projection = {
+                        UserContract.Users._ID,
+                        UserContract.Users.COLUMN_NAME_FIRST_NAME,
+                        UserContract.Users.COLUMN_NAME_LAST_NAME,
+                        UserContract.Users.COLUMN_NAME_AVATAR
+                };
+                Cursor cursor = db.query(
+                        UserContract.Users.TABLE_NAME,
+                        projection,
+                        null, null, null, null, null
+                );
+                while (cursor.moveToNext()) {
+                    Log.d("MainActivity.onCreate", "ID: " + cursor.getInt(0) +
+                                            " First Name: " + cursor.getString(1) +
+                                            " Last Name: " + cursor.getString(2) +
+                                            " Avatar: " + cursor.getString(3));
+                }
             }
 
             @Override
