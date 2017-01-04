@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Onboard-Android</string>
+    <string name="userIdLabel">ID:</string>
+    <string name="userFirstNameLabel">First Name:</string>
+    <string name="userLastNameLabel">Last Name:</string>
+    <string name="userAvatarLabel">Avatar:</string>
 </resources>

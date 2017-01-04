@@ -1,17 +1,20 @@
 package com.example.taqtile.onboard_android;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UsersAdapter.UserClickListener {
 
     private RecyclerView usersList;
     private UsersAdapter mAdapter;
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity.onCreate", "Got RecyclerView");
 
         mAdapter = new UsersAdapter(users);
-
+        mAdapter.setListener(this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         usersList.setAdapter(mAdapter);
         usersList.setLayoutManager(mLayoutManager);
         usersList.setItemAnimator(new DefaultItemAnimator());
+
 
         prepareUserData();
         Log.d("MainActivity.onCreate", "Prepared Data");
@@ -45,5 +49,16 @@ public class MainActivity extends AppCompatActivity {
         users.add(new User(1, "george", "bluth", "avatar"));
         users.add(new User(2, "lucille", "bluth", "avatar"));
         users.add(new User(3, "oscar", "bluth", "avatar"));
+    }
+
+    @Override
+    public void onUserClick(User user) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        Log.d("MainActivity.intent", user.getAvatar());
+        intent.putExtra("userId", user.getId());
+        intent.putExtra("userFirstName", user.getFirstName());
+        intent.putExtra("userLastName", user.getLastName());
+        intent.putExtra("userAvatar", user.getAvatar());
+        startActivity(intent);
     }
 }
