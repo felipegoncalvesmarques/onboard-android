@@ -14,6 +14,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity implements UsersAdapter.UserClickListener {
 
     private RecyclerView usersList;
@@ -41,14 +47,27 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
         usersList.setItemAnimator(new DefaultItemAnimator());
 
 
-        prepareUserData();
-        Log.d("MainActivity.onCreate", "Prepared Data");
-    }
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://reqres.in/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        UsersService usersService = retrofit.create(UsersService.class);
+        Call<UsersWrapper> call = usersService.listUsers(0);
+        Log.d("MainActivity.onCreate", usersService.toString());
+        call.enqueue(new Callback<UsersWrapper>() {
+            @Override
+            public void onResponse(Call<UsersWrapper> call, Response<UsersWrapper> response) {
+                Log.d("MainActivity.onCreate", Integer.toString(response.body().data.size()));
+                users.addAll(response.body().data);
+                mAdapter.notifyDataSetChanged();
+            }
 
-    private void prepareUserData() {
-        users.add(new User(1, "george", "bluth", "avatar"));
-        users.add(new User(2, "lucille", "bluth", "avatar"));
-        users.add(new User(3, "oscar", "bluth", "avatar"));
+            @Override
+            public void onFailure(Call<UsersWrapper> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Wasn`t possible to get users", Toast.LENGTH_LONG).show();
+            }
+        });
+        Log.d("MainActivity.onCreate", "Prepared Data");
     }
 
     @Override

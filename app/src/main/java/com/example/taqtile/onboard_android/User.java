@@ -6,8 +6,8 @@ package com.example.taqtile.onboard_android;
 
 public class User {
     private int id;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
     private String avatar;
 
     public User(int id, String firstName, String lastName, String avatar) {
@@ -26,19 +26,19 @@ public class User {
     }
 
     public String getFirstName() {
-        return firstName;
+        return first_name;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.first_name = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return last_name;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.last_name = lastName;
     }
 
     public String getAvatar() {
