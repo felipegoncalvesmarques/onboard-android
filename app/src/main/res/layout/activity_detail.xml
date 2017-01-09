@@ -8,6 +8,14 @@
     android:orientation="vertical"
     tools:context="com.example.taqtile.onboard_android.DetailActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        app:theme="@style/ToolBarStyle"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
     <com.example.taqtile.onboard_android.DetailElement
         android:id="@+id/userIdElement"
         android:layout_width="match_parent"

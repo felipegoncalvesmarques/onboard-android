@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_option_id"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:padding="4dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_selector"
+    android:clickable="true">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingRight="16dp"
+        android:layout_gravity="center_vertical"
+        android:tint="#FFF"
+        android:id="@+id/option_icon_id"
+        android:src="@drawable/ic_menu_camera"/>
+
+    <TextView
+        android:text="Dummy Activity"
+        android:textColor="#FFF"
+        style="@style/h4"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/option_name_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

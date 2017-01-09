@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dummy_fragment_id"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:text="Hello, from Dummy Fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/h3" />
+
+</LinearLayout>

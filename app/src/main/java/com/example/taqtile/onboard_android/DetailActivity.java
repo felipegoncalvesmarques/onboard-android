@@ -6,9 +6,13 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -19,6 +23,9 @@ public class DetailActivity extends AppCompatActivity {
             LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
     private LinearLayout linearLayout;
+    @Bind(R.id.my_toolbar)
+    public Toolbar mToolBar;
+
     /*android:layout_width="match_parent"*/
 //    android:layout_height="wrap_content"
 //    android:layout_marginTop="16dp"
@@ -28,6 +35,12 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_detail);
         setContentView(R.layout.activity_detail_empty);
+
+        ButterKnife.bind(this);
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         linearLayout = (LinearLayout) findViewById(R.id.activity_detail);
 
         layoutParams.setMargins(getPixelValue(16),getPixelValue(16),getPixelValue(16),getPixelValue(0));

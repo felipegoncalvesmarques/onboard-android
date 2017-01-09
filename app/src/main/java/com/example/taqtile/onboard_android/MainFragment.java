@@ -1,6 +1,8 @@
 package com.example.taqtile.onboard_android;
 
+import android.app.Fragment;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
@@ -11,7 +13,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -24,31 +28,36 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements UsersAdapter.UserClickListener, Callback<UsersWrapper> {
+public class MainFragment extends Fragment implements UsersAdapter.UserClickListener, Callback<UsersWrapper> {
 
     private RecyclerView usersList;
     private UsersAdapter mAdapter;
-    private List<User> users = new ArrayList<User>();
+    private List<User> users;
     private UsersDbHelper mDbHelper;
+    private Context mContext;
+
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Log.d("MainActivity.onCreate", "Debug message from onCreate method at MainActivity");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.activity_main, container, false);
 
-        usersList = (RecyclerView) findViewById(R.id.usersList);
+        mContext = container.getContext();
+        Log.d("MainActivity.onCreate", "Debug message from onCreate method at MainActivity");
+        users = new ArrayList<User>();
+        usersList = (RecyclerView) view.findViewById(R.id.usersList);
 
         Log.d("MainActivity.onCreate", "Got RecyclerView");
 
-        mDbHelper = new UsersDbHelper(this);
+        mDbHelper = new UsersDbHelper(mContext);
 
         mAdapter = new UsersAdapter(users);
         mAdapter.setListener(this);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
 
-        usersList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        usersList.addItemDecoration(new DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
         usersList.setAdapter(mAdapter);
         usersList.setLayoutManager(mLayoutManager);
         usersList.setItemAnimator(new DefaultItemAnimator());
@@ -63,17 +72,18 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
         Log.d("MainActivity.onCreate", usersService.toString());
         call.enqueue(this);
         Log.d("MainActivity.onCreate", "Prepared Data");
+        return view;
     }
 
     @Override
     public void onUserClick(User user) {
-        Intent intent = new Intent(this, DetailActivity.class);
+        Intent intent = new Intent(mContext, DetailActivity.class);
         Log.d("MainActivity.intent", user.getAvatar());
         intent.putExtra("userId", user.getId());
         intent.putExtra("userFirstName", user.getFirstName());
         intent.putExtra("userLastName", user.getLastName());
         intent.putExtra("userAvatar", user.getAvatar());
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     @Override
@@ -118,6 +128,6 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
 
     @Override
     public void onFailure(Call<UsersWrapper> call, Throwable t) {
-        Toast.makeText(getApplicationContext(), "Wasn`t possible to get users", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "Wasn`t possible to get users", Toast.LENGTH_LONG).show();
     }
 }
