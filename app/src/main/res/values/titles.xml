@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="h3">
+        <item name="android:textSize">@dimen/medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="h4">
+        <item name="android:textSize">@dimen/medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+</resources>
